@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rúbrica interactiva · Carta Erasmus+</title>
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#f3f5f9; --surface:#ffffff; --ink:#18202f; --muted:#59627a; --line:#d6dbe7;
+  --blue:#1c3f9c; --blue-soft:#e6ecfb; --on-blue:#ffffff; --yellow:#f6c700; --no:#9b2b2b;
+  --font:"Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg:#11151f;--surface:#1a2030;--ink:#eceff8;--muted:#a3abc0;--line:#2d3550;--blue:#86a2f7;--blue-soft:#232e52;--on-blue:#0d1427;--no:#f08a8a}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--font)}
+header.top{background:var(--surface);border-bottom:1px solid var(--line);padding:14px 16px 0;position:sticky;top:0;z-index:5}
+h1{font-size:1.2rem;margin:0 0 2px;font-weight:700;letter-spacing:-.01em}
+.priv{margin:0 0 10px;color:var(--muted);font-size:.85rem}
+nav{display:flex;gap:4px}
+nav button{flex:1;border:0;background:none;color:var(--muted);font:inherit;font-weight:600;padding:10px 4px;border-bottom:3px solid transparent;cursor:pointer}
+nav button[aria-selected="true"]{color:var(--blue);border-bottom-color:var(--blue)}
+main{max-width:760px;margin:0 auto;padding:16px 16px 40px}
+.view{display:none}.view.on{display:block}
+h2{font-size:1.05rem;margin:0 0 10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:14px}
+.row{display:flex;gap:8px}
+input[type=text],textarea,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px}
+textarea{min-height:64px;resize:vertical}
+button.btn{font:inherit;font-weight:600;border-radius:8px;padding:10px 14px;border:1px solid var(--blue);background:var(--blue);color:var(--on-blue);cursor:pointer}
+button.btn.alt{background:none;color:var(--blue)}
+button.btn.danger{background:none;color:var(--no);border-color:var(--no)}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;align-items:center;gap:8px;border-top:1px solid var(--line);padding:6px 0}
+.list li:first-child{border-top:0}
+.list .name{flex:1;text-align:left;background:none;border:0;font:inherit;color:var(--ink);padding:8px 4px;cursor:pointer;font-weight:600}
+.pill{font-size:.85rem;font-weight:700;padding:2px 10px;border-radius:99px;background:var(--blue-soft);color:var(--blue);white-space:nowrap}
+.pill.none{background:none;color:var(--muted);font-weight:500;border:1px solid var(--line)}
+.x{background:none;border:0;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:6px 10px}
+.empty{color:var(--muted);text-align:center;padding:24px 8px}
+.hint{color:var(--muted);font-size:.85rem;margin:6px 0 0}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+fieldset.crit{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:14px;margin:0 0 14px;min-width:0}
+fieldset.crit legend{font-weight:700;font-size:1.05rem;padding:0 6px}
+.sub{margin:0 0 10px;color:var(--muted);font-size:.9rem}
+.lvls{display:grid;gap:8px}
+label.lvl{position:relative;display:block;border:1.5px solid var(--line);border-radius:9px;padding:10px 12px;cursor:pointer;background:var(--bg)}
+label.lvl input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+label.lvl:focus-within{outline:3px solid var(--yellow);outline-offset:2px}
+label.lvl.on{border-color:var(--blue);background:var(--blue-soft);box-shadow:inset 0 0 0 1px var(--blue)}
+.lh{display:flex;justify-content:space-between;gap:8px;font-size:.95rem}
+.lh span{color:var(--muted)}
+.ld{display:block;font-size:.88rem;margin-top:4px}
+.cm{margin-top:10px}
+.cm label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:4px}
+.scorebar{position:sticky;bottom:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:8px;box-shadow:0 -6px 16px rgba(0,0,0,.08)}
+.scorehead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.scorehead b{font-size:1.4rem}
+.meter{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.seg{height:10px;background:var(--line);border-radius:3px;overflow:hidden}
+.seg i{display:block;height:100%;background:var(--blue)}
+.seglabels{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;font-size:.72rem;color:var(--muted);margin-top:3px;text-align:center}
+.warn{background:var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.85rem;margin-bottom:12px}
+/* Informe */
+.report{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:14px}
+.rh{border-bottom:2px solid var(--blue);padding-bottom:10px;margin-bottom:12px}
+.rh p{margin:0}
+.rk{font-size:.85rem;color:var(--muted)}
+.rh h2{font-size:1.25rem;margin:2px 0 4px}
+.rm{font-size:.95rem}
+.rc{padding:10px 0;border-bottom:1px solid var(--line)}
+.rc p{margin:4px 0;font-size:.92rem}
+.rt{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.rt span{font-weight:700;color:var(--blue)}
+.rcom,.rtip{color:var(--ink)}
+.rtot{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 6px}
+.rtot b{font-size:1.5rem;color:var(--blue)}
+.rsum{font-size:.95rem;margin:10px 0}
+.rnote{border-left:3px solid var(--yellow);padding:2px 0 2px 10px;margin:10px 0;font-size:.92rem}
+.report .meter{margin-top:2px}
+#printarea{display:none}
+@media (min-width:620px){.lvls{grid-template-columns:1fr 1fr}}
+@media print{
+  :root{--bg:#fff;--surface:#fff;--ink:#000;--muted:#444;--line:#bbb;--blue:#1c3f9c;--blue-soft:#e6ecfb}
+  body>*:not(#printarea){display:none!important}
+  #printarea{display:block!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .report{border:0;padding:0;margin:0;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .report:last-child{page-break-after:auto}
+  .rc{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Rúbrica interactiva · Carta Erasmus+</h1>
+  <p class="priv">Funciona sin internet. Los datos se guardan solo en este navegador y no se envían a ningún sitio.</p>
+  <nav role="tablist">
+    <button role="tab" data-view="alumnos" aria-selected="true">Alumnado</button>
+    <button role="tab" data-view="valorar" aria-selected="false">Valorar</button>
+    <button role="tab" data-view="informe" aria-selected="false">Informe</button>
+  </nav>
+</header>
+<main>
+  <div id="storewarn" class="warn" hidden>Este navegador no permite guardar datos al abrir el archivo desde el disco. Descarga la copia de seguridad antes de cerrar la página.</div>
+
+  <section id="v-alumnos" class="view on">
+    <div class="card">
+      <h2>Añadir alumno o alumna</h2>
+      <div class="row">
+        <input type="text" id="newname" placeholder="Nombre (o un código: A1, A2…)" aria-label="Nombre o código" autocomplete="off">
+        <button class="btn" id="addbtn">Añadir</button>
+      </div>
+    </div>
+    <div class="card"><h2>Alumnado</h2><ul class="list" id="studentlist"></ul></div>
+    <div class="card">
+      <h2>Informes y copia de seguridad</h2>
+      <div class="tools" style="margin-top:0">
+        <button class="btn" id="printallbtn">Imprimir todos los informes</button>
+        <button class="btn alt" id="csvbtn">Exportar tabla (CSV)</button>
+      </div>
+      <div class="tools">
+        <button class="btn alt" id="jsonbtn">Descargar copia de seguridad</button>
+        <label class="hint" style="margin:0">Restaurar: <input type="file" id="jsonin" accept=".json,application/json"></label>
+      </div>
+      <div class="tools"><button class="btn danger" id="wipebtn">Borrar todo</button></div>
+    </div>
+  </section>
+
+  <section id="v-valorar" class="view"></section>
+
+  <section id="v-informe" class="view">
+    <div class="card">
+      <h2>Informe individual</h2>
+      <select id="repsel" aria-label="Alumno o alumna"></select>
+      <div style="margin-top:8px"><input type="text" id="evaluator" placeholder="Valorado por (opcional)" aria-label="Valorado por" autocomplete="off"></div>
+      <div class="tools">
+        <button class="btn" id="printonebtn">Imprimir o guardar PDF</button>
+        <button class="btn alt" id="copybtn">Copiar como texto</button>
+      </div>
+      <p class="hint" id="copymsg" aria-live="polite"></p>
+    </div>
+    <div id="reportbox"></div>
+  </section>
+</main>
+<div id="printarea"></div>
+
+<script>
+"use strict";
+const RUBRIC=[
+ {id:"contenido",name:"Contenido",sub:"Motivación, objetivos, habilidades y otros aspectos",
+  tip:"Incluir los cuatro apartados que pide la carta y añadir un ejemplo real de su vida en cada uno.",levels:[
+  {v:1,label:"Excelente",desc:"Incluye motivación personal y académica, objetivos personales y académicos, y habilidades útiles para la movilidad. Da razones y ejemplos propios en cada apartado, y al menos 2 habilidades con un ejemplo real."},
+  {v:0.75,label:"Bueno",desc:"Incluye los tres apartados principales y explica sus razones, pero con pocos ejemplos. Los objetivos son generales. Nombra 2 habilidades sin ejemplo."},
+  {v:0.5,label:"En proceso",desc:"Falta un apartado principal, o los apartados son muy breves (“quiero ir porque me gusta viajar”). Solo habla de un tipo de motivación u objetivo (personal o académico)."},
+  {v:0.25,label:"Inicial",desc:"Faltan dos o más apartados, o son ideas sueltas que no se relacionan con la movilidad."}]},
+ {id:"lenguaje",name:"Lenguaje",sub:"Claro, coherente, sin errores gramaticales y adaptado a la edad",
+  tip:"Unir las ideas con conectores (porque, además, por eso) y repasar las frases antes de entregar la carta.",levels:[
+  {v:1,label:"Excelente",desc:"Se entiende todo a la primera. Las ideas están ordenadas y unidas con conectores (porque, además, por eso). Frases completas y vocabulario variado propio de 6º. Hasta 3 errores gramaticales (concordancia, tiempos verbales)."},
+  {v:0.75,label:"Bueno",desc:"Se entiende bien y las ideas siguen un orden. Entre 4 y 6 errores gramaticales que no impiden entender. Vocabulario adecuado, algo repetitivo."},
+  {v:0.5,label:"En proceso",desc:"Hay pasajes que cuestan de entender. Ideas desordenadas o repetidas, frases incompletas o muy largas sin puntuar. Entre 7 y 10 errores gramaticales."},
+  {v:0.25,label:"Inicial",desc:"Es difícil de entender. Frases sueltas sin conexión y más de 10 errores gramaticales."}]},
+ {id:"presentacion",name:"Presentación",sub:"Estructura, caligrafía y ortografía",
+  tip:"Separar los párrafos, añadir saludo y despedida, y cuidar la letra, los tachones y las tildes.",levels:[
+  {v:1,label:"Excelente",desc:"Tiene saludo, párrafos separados (uno por idea), despedida y firma. Letra clara y regular, sin tachones. Hasta 3 faltas de ortografía (tildes, b/v, h, mayúsculas, puntuación)."},
+  {v:0.75,label:"Bueno",desc:"Estructura casi completa (falta un elemento). Letra legible con algún tachón. Entre 4 y 6 faltas de ortografía."},
+  {v:0.5,label:"En proceso",desc:"Estructura incompleta (por ejemplo, un solo bloque de texto o sin saludo ni despedida). Letra difícil de leer en varios sitios y tachones frecuentes. Entre 7 y 10 faltas de ortografía."},
+  {v:0.25,label:"Inicial",desc:"Sin estructura reconocible, letra muy difícil de leer y aspecto descuidado. Más de 10 faltas de ortografía."}]},
+ {id:"originalidad",name:"Originalidad",sub:"Realización propia, sin IA",
+  tip:"Contar cosas que solo él o ella puede contar: su familia, su pueblo, sus experiencias y sus propias palabras.",levels:[
+  {v:1,label:"Excelente",desc:"Voz propia: datos personales reales (familia, pueblo, aficiones, experiencias del cole) y expresiones de su edad. Coincide con cómo escribe en clase."},
+  {v:0.75,label:"Bueno",desc:"Mayoritariamente propia. Alguna frase genérica o muy típica, pero con detalles personales. Coincide con su nivel habitual."},
+  {v:0.5,label:"En proceso",desc:"Predominan frases genéricas que valdrían para cualquier alumno. Pocos datos personales. Algún pasaje con vocabulario o construcciones muy por encima de su nivel."},
+  {v:0.25,label:"Inicial",desc:"Texto impersonal sin referencias personales, o con señales claras de copia o de IA (lenguaje adulto, estructura de plantilla, ideas ajenas a lo que el alumno dice en clase)."}]}
+];
+const CRIT=RUBRIC.map(c=>c.id);
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const r2=n=>Math.round(n*100)/100;
+const fmt=n=>n==null?"–":String(r2(n)).replace(".",",");
+const levelOf=(c,v)=>RUBRIC.find(x=>x.id===c).levels.find(l=>l.v===v);
+
+/* ---------- Datos ---------- */
+const KEY="rubrica-erasmus-manual-v1";
+let db={students:[],current:null,evaluator:""};
+let storageOK=true;
+try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);if(d&&Array.isArray(d.students))db=Object.assign(db,d)}}catch(e){storageOK=false}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){storageOK=false;$("#storewarn").hidden=false}}
+if(!storageOK)$("#storewarn").hidden=false;
+const cur=()=>db.students.find(s=>s.id===db.current);
+const total=s=>r2(CRIT.reduce((a,c)=>a+(s.levels[c]||0),0));
+const doneCount=s=>CRIT.filter(c=>s.levels[c]).length;
+function download(name,text,type){
+  const blob=new Blob([text],{type});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+
+/* ---------- Navegación ---------- */
+function show(v){
+  document.querySelectorAll(".view").forEach(e=>e.classList.toggle("on",e.id==="v-"+v));
+  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.view===v)));
+  if(v==="alumnos")renderList();
+  if(v==="valorar")renderValorar();
+  if(v==="informe")renderInforme();
+  window.scrollTo(0,0);
+}
+document.querySelector("nav").addEventListener("click",e=>{const b=e.target.closest("button");if(b)show(b.dataset.view)});
+
+/* ---------- Alumnado ---------- */
+function addStudent(){
+  const inp=$("#newname");const name=inp.value.trim();if(!name)return;
+  const st={id:"s"+Date.now()+Math.floor(Math.random()*1000),name,levels:{},comments:{},notes:""};
+  db.students.push(st);db.current=st.id;save();inp.value="";show("valorar");
+}
+$("#addbtn").addEventListener("click",addStudent);
+$("#newname").addEventListener("keydown",e=>{if(e.key==="Enter")addStudent()});
+function renderList(){
+  const ul=$("#studentlist");
+  if(!db.students.length){ul.innerHTML='<li class="empty" style="display:block;width:100%">Todavía no hay alumnado. Añade el primero arriba.</li>';return}
+  ul.innerHTML=db.students.map(s=>{
+    const n=doneCount(s);
+    const pill=n===0?'<span class="pill none">Sin valorar</span>':n<4?'<span class="pill none">'+n+'/4 criterios</span>':'<span class="pill">'+fmt(total(s))+' / 4</span>';
+    return '<li><button class="name" data-open="'+s.id+'">'+esc(s.name)+'</button>'+pill+'<button class="x" data-del="'+s.id+'" aria-label="Eliminar '+esc(s.name)+'">✕</button></li>';
+  }).join("");
+}
+$("#studentlist").addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]");const d=e.target.closest("[data-del]");
+  if(o){db.current=o.dataset.open;save();show("valorar")}
+  if(d){const s=db.students.find(x=>x.id===d.dataset.del);
+    if(s&&confirm("¿Eliminar a "+s.name+" y su valoración?")){
+      db.students=db.students.filter(x=>x.id!==s.id);if(db.current===s.id)db.current=null;save();renderList();
+    }}
+});
+
+/* ---------- Valorar ---------- */
+function renderValorar(){
+  const st=cur();const box=$("#v-valorar");
+  if(!st){box.innerHTML='<p class="empty">Elige a un alumno o alumna en la pestaña Alumnado, o añade uno nuevo.</p>';return}
+  st.comments=st.comments||{};
+  box.innerHTML=
+   '<div class="card"><h2>'+esc(st.name)+'</h2><p class="hint" style="margin:0">Elige el nivel de cada criterio mirando la carta. El total se calcula solo.</p></div>'+
+   RUBRIC.map(c=>
+     '<fieldset class="crit"><legend>'+c.name+'</legend><p class="sub">'+c.sub+'</p><div class="lvls">'+
+     c.levels.map(l=>'<label class="lvl" data-c="'+c.id+'" data-v="'+l.v+'"><input type="radio" name="r-'+c.id+'" value="'+l.v+'">'+
+       '<span class="lh"><b>'+l.label+'</b><span>'+fmt(l.v)+' pt</span></span><span class="ld">'+l.desc+'</span></label>').join("")+
+     '</div><div class="cm"><label for="c-'+c.id+'">Observaciones (opcional)</label><textarea id="c-'+c.id+'" data-cm="'+c.id+'">'+esc(st.comments[c.id]||"")+'</textarea></div></fieldset>').join("")+
+   '<div class="card"><h2>Comentario general</h2><textarea id="notes" placeholder="Comentario final para el informe (opcional)">'+esc(st.notes)+'</textarea>'+
+   '<div class="tools"><button class="btn" id="goreport">Ver informe</button></div></div>'+
+   '<div class="scorebar" aria-live="polite"><div class="scorehead"><span id="sdone"></span><b id="stot"></b></div>'+
+   '<div class="meter">'+CRIT.map(c=>'<div class="seg"><i id="seg-'+c+'" style="width:0"></i></div>').join("")+'</div>'+
+   '<div class="seglabels"><span>Contenido</span><span>Lenguaje</span><span>Present.</span><span>Original.</span></div></div>';
+  refresh();
+}
+function refresh(){
+  const st=cur();if(!st)return;
+  document.querySelectorAll("label.lvl").forEach(l=>{
+    const on=st.levels[l.dataset.c]===parseFloat(l.dataset.v);
+    l.classList.toggle("on",on);l.querySelector("input").checked=on;
+  });
+  $("#stot").textContent=fmt(total(st))+" / 4";
+  const n=doneCount(st);
+  $("#sdone").textContent=n===4?"Valoración completa":n+" de 4 criterios valorados";
+  CRIT.forEach(c=>{$("#seg-"+c).style.width=((st.levels[c]||0)*100)+"%"});
+}
+$("#v-valorar").addEventListener("change",e=>{
+  const st=cur();if(!st)return;
+  if(e.target.matches("input[type=radio]")){st.levels[e.target.name.replace("r-","")]=parseFloat(e.target.value);save();refresh()}
+});
+$("#v-valorar").addEventListener("input",e=>{
+  const st=cur();if(!st)return;
+  if(e.target.dataset.cm){st.comments[e.target.dataset.cm]=e.target.value;save()}
+  if(e.target.id==="notes"){st.notes=e.target.value;save()}
+});
+$("#v-valorar").addEventListener("click",e=>{if(e.target.id==="goreport")show("informe")});
+
+/* ---------- Informe ---------- */
+const hoy=()=>new Date().toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"});
+function summary(st){
+  const nom={contenido:"el contenido",lenguaje:"el lenguaje",presentacion:"la presentación",originalidad:"la originalidad"};
+  const done=CRIT.filter(c=>st.levels[c]);
+  if(!done.length)return "";
+  const fuertes=done.filter(c=>st.levels[c]>=0.75).map(c=>nom[c]);
+  const mejorar=done.filter(c=>st.levels[c]<=0.5).map(c=>nom[c]);
+  const lista=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" y "+a[a.length-1];
+  let t="La carta obtiene "+fmt(total(st))+" puntos de 4.";
+  if(fuertes.length)t+=" Destaca en "+lista(fuertes)+".";
+  if(mejorar.length)t+=" Conviene mejorar "+lista(mejorar)+".";
+  if(done.length<4)t+=" Faltan criterios por valorar.";
+  return t;
+}
+function reportHTML(st){
+  const cm=st.comments||{};
+  const ev=db.evaluator?" · Valorado por "+esc(db.evaluator):"";
+  return '<article class="report"><header class="rh"><p class="rk">Proyecto Erasmus+ · Movilidad a Polonia, mayo 2027</p>'+
+    '<h2>Informe de valoración de la carta</h2><p class="rm"><b>'+esc(st.name)+'</b> · '+hoy()+ev+'</p></header>'+
+    RUBRIC.map(c=>{
+      const v=st.levels[c.id];const l=v?levelOf(c.id,v):null;
+      return '<section class="rc"><div class="rt"><b>'+c.name+'</b><span>'+(l?l.label+" · "+fmt(v)+" / 1":"Sin valorar")+'</span></div>'+
+        (l?'<p>'+l.desc+'</p>':'')+
+        (cm[c.id]&&cm[c.id].trim()?'<p class="rcom"><b>Observaciones:</b> '+esc(cm[c.id])+'</p>':'')+
+        (l&&v<1?'<p class="rtip"><b>Para mejorar:</b> '+c.tip+'</p>':'')+'</section>';
+    }).join("")+
+    '<div class="rtot"><span>Puntuación total</span><b>'+fmt(total(st))+' / 4</b></div>'+
+    '<div class="meter">'+CRIT.map(c=>'<div class="seg"><i style="width:'+((st.levels[c]||0)*100)+'%"></i></div>').join("")+'</div>'+
+    '<div class="seglabels"><span>Contenido</span><span>Lenguaje</span><span>Present.</span><span>Original.</span></div>'+
+    (summary(st)?'<p class="rsum">'+summary(st)+'</p>':'')+
+    (st.notes&&st.notes.trim()?'<div class="rnote"><b>Comentario general:</b> '+esc(st.notes)+'</div>':'')+
+    '</article>';
+}
+function reportText(st){
+  const cm=st.comments||{};
+  let t="INFORME DE VALORACIÓN DE LA CARTA · Erasmus+ Polonia (mayo 2027)\n"+st.name+" · "+hoy()+(db.evaluator?" · Valorado por "+db.evaluator:"")+"\n\n";
+  RUBRIC.forEach(c=>{
+    const v=st.levels[c.id];const l=v?levelOf(c.id,v):null;
+    t+=c.name+": "+(l?l.label+" ("+fmt(v)+" / 1)":"Sin valorar")+"\n";
+    if(l)t+=l.desc+"\n";
+    if(cm[c.id]&&cm[c.id].trim())t+="Observaciones: "+cm[c.id].trim()+"\n";
+    if(l&&v<1)t+="Para mejorar: "+c.tip+"\n";
+    t+="\n";
+  });
+  t+="PUNTUACIÓN TOTAL: "+fmt(total(st))+" / 4\n";
+  if(summary(st))t+=summary(st)+"\n";
+  if(st.notes&&st.notes.trim())t+="\nComentario general: "+st.notes.trim()+"\n";
+  return t;
+}
+function renderInforme(){
+  const sel=$("#repsel");
+  $("#evaluator").value=db.evaluator||"";
+  $("#copymsg").textContent="";
+  if(!db.students.length){sel.innerHTML="";$("#reportbox").innerHTML='<p class="empty">Añade alumnado en la pestaña Alumnado para generar informes.</p>';return}
+  if(!cur())db.current=db.students[0].id;
+  sel.innerHTML=db.students.map(s=>'<option value="'+s.id+'"'+(s.id===db.current?" selected":"")+'>'+esc(s.name)+'</option>').join("");
+  $("#reportbox").innerHTML=reportHTML(cur());
+}
+$("#repsel").addEventListener("change",e=>{db.current=e.target.value;save();renderInforme()});
+$("#evaluator").addEventListener("input",e=>{db.evaluator=e.target.value;save();if(cur())$("#reportbox").innerHTML=reportHTML(cur())});
+function printReports(list){
+  if(!list.length)return;
+  $("#printarea").innerHTML=list.map(reportHTML).join("");
+  window.print();
+}
+$("#printonebtn").addEventListener("click",()=>{const s=cur();if(s)printReports([s])});
+$("#printallbtn").addEventListener("click",()=>{
+  if(!db.students.length){alert("Todavía no hay alumnado.");return}
+  printReports(db.students);
+});
+$("#copybtn").addEventListener("click",async()=>{
+  const s=cur();if(!s)return;const t=reportText(s);const msg=$("#copymsg");
+  try{await navigator.clipboard.writeText(t);msg.textContent="Informe copiado."}
+  catch(e){
+    const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");msg.textContent="Informe copiado."}catch(_){msg.textContent="No se pudo copiar en este navegador."}
+    ta.remove();
+  }
+});
+
+/* ---------- Exportar y copia de seguridad ---------- */
+$("#csvbtn").addEventListener("click",()=>{
+  if(!db.students.length){alert("Todavía no hay alumnado.");return}
+  const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"';
+  const num=v=>v?String(v).replace(".",","):"";
+  const head=["Alumno/a"].concat(RUBRIC.map(c=>c.name)).concat(["Total (máx. 4)","Comentario general"]);
+  const lines=[head.map(q).join(";")];
+  db.students.forEach(s=>lines.push([q(s.name)].concat(CRIT.map(c=>q(num(s.levels[c])))).concat([q(doneCount(s)?num(total(s)):""),q(s.notes)]).join(";")));
+  download("valoracion-cartas-erasmus.csv","\ufeff"+lines.join("\r\n"),"text/csv;charset=utf-8");
+});
+$("#jsonbtn").addEventListener("click",()=>download("copia-seguridad-rubrica-erasmus.json",JSON.stringify(db),"application/json"));
+$("#jsonin").addEventListener("change",e=>{
+  const f=e.target.files[0];if(!f)return;
+  const fr=new FileReader();
+  fr.onload=()=>{
+    try{
+      const d=JSON.parse(String(fr.result));
+      if(!d||!Array.isArray(d.students))throw new Error("formato");
+      if(confirm("Se sustituirán los datos actuales por la copia de seguridad. ¿Continuar?")){
+        db=Object.assign({students:[],current:null,evaluator:""},d);save();renderList();
+      }
+    }catch(err){alert("El archivo no es una copia de seguridad válida.")}
+    e.target.value="";
+  };
+  fr.readAsText(f);
+});
+$("#wipebtn").addEventListener("click",()=>{
+  if(confirm("Se borrarán todos los datos de este navegador. ¿Continuar?")){db={students:[],current:null,evaluator:""};save();renderList()}
+});
+
+renderList();
+</script>
+</body>
+</html>
