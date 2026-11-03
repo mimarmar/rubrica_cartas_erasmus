@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rúbrica carta de motivación · Erasmus+</title>
+<style>
+:root{
+  color-scheme: light;
+  --ink:#1d2747; --muted:#566083; --blue:#2d63e8; --blue-d:#1f49b8; --yellow:#ffc933; --purple:#7b4fd1; --purple-b:#efe8fb;
+  --line:#c9d7ee; --paper:#f7fbff; --white:#ffffff; --danger:#c0344b;
+  --l4:#2e9e5b; --l4b:#e2f6e9; --l3:#2f80d1; --l3b:#e1effc; --l2:#e6ad00; --l2b:#fff4c2; --l1:#dc4a63; --l1b:#fde4e9;
+  --head:"Marker Felt","Chalkboard SE","Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
+  --font:"Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);font:16px/1.5 var(--font);background-color:var(--paper);
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:26px 26px;background-position:-1px -1px}
+header.top{background:var(--blue);color:#fff;padding:14px 16px 0;position:sticky;top:0;z-index:5;border-bottom:6px solid var(--yellow)}
+h1{font:700 1.3rem/1.2 var(--head);margin:0 0 2px;letter-spacing:.01em}
+.priv{margin:0 0 10px;color:#dbe6ff;font-size:.82rem}
+nav{display:flex;gap:6px;padding-bottom:0}
+nav button{flex:1;border:0;background:rgba(255,255,255,.18);color:#fff;font:700 .85rem var(--font);padding:10px 4px;border-radius:12px 12px 0 0;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--yellow);color:#2a2100}
+main{max-width:780px;margin:0 auto;padding:18px 14px 44px}
+.view{display:none}.view.on{display:block}
+h2{font:700 1.15rem/1.25 var(--head);margin:0 0 10px;color:var(--blue-d)}
+.card{background:var(--white);border:2px solid var(--line);border-top:8px solid var(--purple);border-radius:16px;padding:14px;margin-bottom:16px;box-shadow:0 4px 0 rgba(45,99,232,.12)}
+.card.b{border-top-color:var(--blue)}.card.y{border-top-color:var(--yellow)}.card.g{border-top-color:var(--l4)}
+.row{display:flex;gap:8px}
+input[type=text],textarea,select{width:100%;font:inherit;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 12px}
+input[type=text]:focus,textarea:focus,select:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px rgba(45,99,232,.2)}
+textarea{min-height:64px;resize:vertical}
+button.btn{font:700 1rem var(--font);border-radius:12px;padding:10px 16px;border:2px solid var(--blue-d);background:var(--blue);color:#fff;cursor:pointer;box-shadow:0 3px 0 var(--blue-d)}
+button.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--blue-d)}
+button.btn.alt{background:#fff;color:var(--blue-d)}
+button.btn.green{background:var(--l4);border-color:#1f7a44;box-shadow:0 3px 0 #1f7a44}
+button.btn.danger{background:#fff;color:var(--danger);border-color:var(--danger);box-shadow:0 3px 0 var(--danger)}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px;box-shadow:0 0 0 5px var(--blue-d)}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;align-items:center;gap:8px;border-top:2px dashed var(--line);padding:6px 0}
+.list li:first-child{border-top:0}
+.list .name{flex:1;text-align:left;background:none;border:0;font:700 1rem var(--font);color:var(--ink);padding:8px 4px;cursor:pointer}
+.pill{font-weight:800;font-size:.85rem;padding:3px 12px;border-radius:99px;background:var(--l4);color:#fff;white-space:nowrap}
+.pill.none{background:#fff;color:var(--muted);font-weight:600;border:2px solid var(--line)}
+.x{background:none;border:0;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:6px 10px}
+.empty{color:var(--muted);text-align:center;padding:24px 8px;background:#fff;border:2px dashed var(--line);border-radius:16px}
+.hint{color:var(--muted);font-size:.86rem;margin:6px 0 0}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
+fieldset.crit{border:2px solid var(--line);border-radius:16px;background:#fff;padding:16px 14px 14px;margin:0 0 18px;min-width:0;box-shadow:0 4px 0 rgba(123,79,209,.14)}
+fieldset.crit legend{font:700 1.1rem var(--head);padding:4px 14px;background:var(--purple);color:#fff;border-radius:99px}
+.sub{margin:0 0 12px;color:var(--muted);font-size:.9rem}
+.lvls{display:grid;gap:10px}
+.l4{--lc:var(--l4);--lb:var(--l4b);--lt:#fff}
+.l3{--lc:var(--l3);--lb:var(--l3b);--lt:#fff}
+.l2{--lc:var(--l2);--lb:var(--l2b);--lt:#3a2c00}
+.l1{--lc:var(--l1);--lb:var(--l1b);--lt:#fff}
+label.lvl{position:relative;display:block;border:2px solid transparent;border-left:9px solid var(--lc);border-radius:12px;padding:10px 12px;cursor:pointer;background:var(--lb)}
+label.lvl input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+label.lvl:focus-within{outline:3px solid var(--blue-d);outline-offset:2px}
+label.lvl.on{border-color:var(--lc);border-left-color:var(--lc);box-shadow:0 0 0 2px var(--lc)}
+label.lvl.on::after{content:"✓";position:absolute;top:-10px;right:-6px;width:26px;height:26px;border-radius:50%;background:var(--lc);color:var(--lt);font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.lh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.chip{display:inline-block;background:var(--lc);color:var(--lt);font-weight:800;font-size:.85rem;padding:2px 12px;border-radius:99px}
+.lp{font:700 1.1rem var(--head);color:var(--ink)}
+.ld{display:block;font-size:.9rem;margin-top:6px}
+.cm{margin-top:12px}
+.cm label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:4px;font-weight:600}
+.scorebar{position:sticky;bottom:8px;background:#fff;border:3px solid var(--blue);border-radius:16px;padding:10px 14px;margin-top:8px;box-shadow:0 6px 0 rgba(45,99,232,.2)}
+.scorehead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}
+.scorehead b{font:700 1.45rem var(--head);color:var(--blue-d)}
+.scorehead small{color:var(--muted)}
+.meter{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.seg{height:12px;background:#e4ecf8;border-radius:99px;overflow:hidden}
+.seg i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--purple))}
+.seglabels{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;font-size:.72rem;color:var(--muted);margin-top:3px;text-align:center;font-weight:600}
+.warn{background:#fff4c2;border:2px solid var(--yellow);border-radius:12px;padding:8px 12px;font-size:.86rem;margin-bottom:14px}
+.stars{font-size:1.1rem;letter-spacing:2px}
+/* Informe */
+.report{background:#fff;border:2px solid var(--line);border-top:10px solid var(--blue);border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 4px 0 rgba(45,99,232,.12)}
+.rh{border-bottom:3px dotted var(--yellow);padding-bottom:10px;margin-bottom:12px}
+.rh p{margin:0}
+.rk{font-size:.85rem;color:var(--muted);font-weight:600}
+.rh h2{font-size:1.3rem;margin:2px 0 4px}
+.rm{font-size:.95rem}
+.rc{padding:10px 0;border-bottom:2px dashed var(--line)}
+.rc p{margin:5px 0;font-size:.92rem}
+.rt{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.rt b{font:700 1.05rem var(--head);color:var(--purple)}
+.rtot{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 6px;gap:8px}
+.rtot b{font:700 1.7rem var(--head);color:var(--blue-d)}
+.rsum{font-size:.95rem;margin:10px 0}
+.rnote{border-left:5px solid var(--yellow);background:#fffbe6;padding:6px 10px;margin:10px 0;font-size:.92rem;border-radius:0 10px 10px 0}
+.lvl.static{position:relative;display:block;border:2px solid transparent;border-left:9px solid var(--lc);border-radius:12px;padding:10px 12px;background:var(--lb)}
+@page rub{size:landscape;margin:12mm}
+.rubprint{page:rub}
+.rubhead{border-bottom:3px dotted var(--yellow);padding-bottom:8px;margin-bottom:10px}
+.rubhead p{margin:0}
+.rubhead h2{font-size:1.4rem;margin:2px 0 0}
+.rubtable{width:100%;border-collapse:collapse;table-layout:fixed;font-size:10pt;line-height:1.35}
+.rubtable th,.rubtable td{border:1.5px solid #6b7a9c;padding:6px 8px;vertical-align:top;text-align:left}
+.rubtable th.hc,.rubtable td.cn{background:var(--purple-b);font-weight:700;width:13%}
+.rubtable th{font-weight:800}
+.rubtable th.l4,.rubtable td.l4{background:var(--l4b)}
+.rubtable th.l3,.rubtable td.l3{background:var(--l3b)}
+.rubtable th.l2,.rubtable td.l2{background:var(--l2b)}
+.rubtable th.l1,.rubtable td.l1{background:var(--l1b)}
+.rubfoot{font-size:.85rem;color:var(--muted);margin-top:8px}
+#printarea{display:none}
+@media (min-width:620px){.lvls{grid-template-columns:1fr 1fr}}
+@media print{
+  body{background:#fff;color:#000;font-size:12pt}
+  body>*:not(#printarea){display:none!important}
+  #printarea{display:block!important}
+  .report{border:0;border-top:10px solid var(--blue);padding:8px 0 0;margin:0;box-shadow:none;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .report:last-child{page-break-after:auto}
+  .rc{page-break-inside:avoid}
+  .rubtable th,.rubtable td,.rubprint{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rubtable tr{page-break-inside:avoid}
+  .chip,.seg i{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>🎒 Rúbrica carta de motivación · Erasmus+</h1>
+  <p class="priv">Funciona sin internet. Los datos se guardan solo en este navegador y no se envían a ningún sitio.</p>
+  <nav role="tablist">
+    <button role="tab" data-view="alumnos" aria-selected="true">👧 Alumnado</button>
+    <button role="tab" data-view="valorar" aria-selected="false">✏️ Valorar</button>
+    <button role="tab" data-view="informe" aria-selected="false">📄 Informe</button>
+    <button role="tab" data-view="rubrica" aria-selected="false">📊 Rúbrica</button>
+  </nav>
+</header>
+<main>
+  <div id="storewarn" class="warn" hidden>Este navegador no permite guardar datos al abrir el archivo desde el disco. Descarga la copia de seguridad antes de cerrar la página.</div>
+
+  <section id="v-alumnos" class="view on">
+    <div class="tools" style="margin:0 0 14px"><button class="btn alt" id="gorub">📊 Ver la rúbrica completa</button></div>
+    <div class="card b">
+      <h2>➕ Añadir alumno o alumna</h2>
+      <div class="row">
+        <input type="text" id="newname" placeholder="Nombre (o un código: A1, A2…)" aria-label="Nombre o código" autocomplete="off">
+        <button class="btn" id="addbtn">Añadir</button>
+      </div>
+    </div>
+    <div class="card y"><h2>📋 Alumnado</h2><ul class="list" id="studentlist"></ul></div>
+    <div class="card g">
+      <h2>🖨️ Informes y copia de seguridad</h2>
+      <div class="tools" style="margin-top:0">
+        <button class="btn green" id="printallbtn">Imprimir todos los informes</button>
+        <button class="btn alt" id="csvbtn">Exportar tabla (CSV)</button>
+      </div>
+      <div class="tools">
+        <button class="btn alt" id="jsonbtn">Descargar copia de seguridad</button>
+        <label class="hint" style="margin:0">Restaurar: <input type="file" id="jsonin" accept=".json,application/json"></label>
+      </div>
+      <div class="tools"><button class="btn danger" id="wipebtn">Borrar todo</button></div>
+    </div>
+  </section>
+
+  <section id="v-valorar" class="view"></section>
+
+  <section id="v-informe" class="view">
+    <div class="card b">
+      <h2>📄 Informe individual</h2>
+      <select id="repsel" aria-label="Alumno o alumna"></select>
+      <div style="margin-top:8px"><input type="text" id="evaluator" placeholder="Valorado por (opcional)" aria-label="Valorado por" autocomplete="off"></div>
+      <div class="tools">
+        <button class="btn" id="printonebtn">Imprimir o guardar PDF</button>
+        <button class="btn alt" id="copybtn">Copiar como texto</button>
+      </div>
+      <p class="hint" id="copymsg" aria-live="polite"></p>
+    </div>
+    <div id="reportbox"></div>
+  </section>
+  <section id="v-rubrica" class="view">
+    <div class="card b">
+      <h2>📊 Rúbrica de la carta de motivación</h2>
+      <p class="hint" style="margin-top:0">Consulta general de los criterios y los niveles. No hace falta añadir alumnado. La nota final es la media de los cuatro criterios (máximo 4 puntos).</p>
+      <div class="tools"><button class="btn green" id="printrub">Imprimir o guardar PDF</button></div>
+      <p class="hint">Al imprimir, elige «Guardar como PDF». En iPhone o iPad: en la vista previa de impresión, separa dos dedos sobre la miniatura para abrir el PDF y pulsa Compartir → Guardar en Archivos.</p>
+    </div>
+    <div id="rubbox"></div>
+  </section>
+</main>
+<div id="printarea"></div>
+
+<script>
+"use strict";
+/* Rúbrica del centro: 4 criterios x 4 niveles (4, 3, 2, 1). Nota final = media de los 4 criterios (máx. 4). */
+const RUBRIC=[
+ {id:"motivacion",name:"Motivación",icon:"🌟",sub:"Objetivos académicos y/o personales e interés por el idioma y/o la cultura",
+  tip:"Explicar con claridad qué quiere conseguir, a nivel personal y académico, y por qué le interesan el idioma y la cultura del país.",levels:[
+  {v:4,label:"Excelente",desc:"El estudiante expresa claramente sus objetivos académicos y/o personales, muestra un gran interés en el idioma y/o cultura."},
+  {v:3,label:"Bueno",desc:"El estudiante expresa sus objetivos académicos y/o personales, muestra interés en el idioma y/o cultura."},
+  {v:2,label:"Aceptable",desc:"El estudiante expresa pocos objetivos académicos y/o personales, muestra poco interés en el idioma y/o cultura."},
+  {v:1,label:"Necesita mejorar",desc:"El estudiante no expresa sus objetivos académicos y/o personales, no muestra interés en el idioma y/o cultura."}]},
+ {id:"contenido",name:"Contenido",icon:"📖",sub:"Razones personales, académicas y habilidades para la movilidad",
+  tip:"Explicar con claridad y con ejemplos sus razones personales y académicas y las habilidades que tiene para la movilidad.",levels:[
+  {v:4,label:"Excelente",desc:"El estudiante expone de manera clara y convincente sus razones personales, académicas y habilidades relevantes para la movilidad."},
+  {v:3,label:"Bueno",desc:"El estudiante expone sus razones personales, académicas y habilidades relevantes para la movilidad, de manera menos clara o convincente."},
+  {v:2,label:"Aceptable",desc:"El estudiante expone algunas razones personales, académicas y habilidades relevantes para la movilidad, pero no de manera menos clara o convincente."},
+  {v:1,label:"Necesita mejorar",desc:"El estudiante no expone razones personales, académicas ni habilidades relevantes para la movilidad."}]},
+ {id:"lenguaje",name:"Lenguaje",icon:"🗣️",sub:"Claridad, coherencia, gramática y ortografía",
+  tip:"Ordenar bien las ideas y repasar la gramática y la ortografía antes de entregar la carta.",levels:[
+  {v:4,label:"Excelente",desc:"El estudiante presenta una carta con claridad, coherencia, sin errores gramaticales ni ortográficos."},
+  {v:3,label:"Bueno",desc:"El estudiante presenta una carta con cierta claridad y coherencia y pocos errores gramaticales y ortográficos."},
+  {v:2,label:"Aceptable",desc:"El estudiante presenta una carta con poca claridad y coherencia y con varios errores gramaticales y ortográficos."},
+  {v:1,label:"Necesita mejorar",desc:"El estudiante presenta una carta confusa, con muchos errores gramaticales y ortográficos."}]},
+ {id:"presentacion",name:"Presentación",icon:"✏️",sub:"Estructura, separación de párrafos y caligrafía",
+  tip:"Incluir saludo y despedida, separar los párrafos y cuidar la letra para que se lea bien.",levels:[
+  {v:4,label:"Excelente",desc:"La carta tiene una estructura clara (saludo y despedida), separación de párrafos y una buena caligrafía."},
+  {v:3,label:"Bueno",desc:"La carta tiene una estructura adecuada (saludo y despedida), puede haber alguna falta en la separación de párrafos y una caligrafía legible."},
+  {v:2,label:"Aceptable",desc:"La carta tiene una estructura básica (saludo y despedida), pero sin separación de párrafos y una caligrafía poco legible."},
+  {v:1,label:"Necesita mejorar",desc:"La carta no tiene estructura (sin saludo y despedida) y tiene una caligrafía ilegible."}]}
+];
+const CRIT=RUBRIC.map(c=>c.id);
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const r2=n=>Math.round(n*100)/100;
+const fmt=n=>n==null?"–":String(r2(n)).replace(".",",");
+const levelOf=(c,v)=>RUBRIC.find(x=>x.id===c).levels.find(l=>l.v===v);
+
+/* ---------- Datos (solo en este navegador) ---------- */
+const KEY="rubrica-erasmus-colegio-v1";
+let db={students:[],current:null,evaluator:""};
+let storageOK=true;
+try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);if(d&&Array.isArray(d.students))db=Object.assign(db,d)}}catch(e){storageOK=false}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){storageOK=false;$("#storewarn").hidden=false}}
+if(!storageOK)$("#storewarn").hidden=false;
+const cur=()=>db.students.find(s=>s.id===db.current);
+const sum=s=>CRIT.reduce((a,c)=>a+(s.levels[c]||0),0);
+const nota=s=>r2(sum(s)/CRIT.length);
+const doneCount=s=>CRIT.filter(c=>s.levels[c]).length;
+function download(name,text,type){
+  const blob=new Blob([text],{type});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+
+/* ---------- Navegación ---------- */
+function show(v){
+  document.querySelectorAll(".view").forEach(e=>e.classList.toggle("on",e.id==="v-"+v));
+  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.view===v)));
+  if(v==="alumnos")renderList();
+  if(v==="valorar")renderValorar();
+  if(v==="informe")renderInforme();
+  if(v==="rubrica")renderRubrica();
+  window.scrollTo(0,0);
+}
+document.querySelector("nav").addEventListener("click",e=>{const b=e.target.closest("button");if(b)show(b.dataset.view)});
+
+/* ---------- Alumnado ---------- */
+function addStudent(){
+  const inp=$("#newname");const name=inp.value.trim();if(!name)return;
+  const st={id:"s"+Date.now()+Math.floor(Math.random()*1000),name,levels:{},comments:{},notes:""};
+  db.students.push(st);db.current=st.id;save();inp.value="";show("valorar");
+}
+$("#addbtn").addEventListener("click",addStudent);
+$("#newname").addEventListener("keydown",e=>{if(e.key==="Enter")addStudent()});
+function renderList(){
+  const ul=$("#studentlist");
+  if(!db.students.length){ul.innerHTML='<li class="empty" style="display:block;width:100%">Todavía no hay alumnado. Añade el primero arriba.</li>';return}
+  ul.innerHTML=db.students.map(s=>{
+    const n=doneCount(s);
+    const pill=n===0?'<span class="pill none">Sin valorar</span>':n<4?'<span class="pill none">'+n+'/4 criterios</span>':'<span class="pill">'+fmt(nota(s))+' / 4</span>';
+    return '<li><button class="name" data-open="'+s.id+'">'+esc(s.name)+'</button>'+pill+'<button class="x" data-del="'+s.id+'" aria-label="Eliminar '+esc(s.name)+'">✕</button></li>';
+  }).join("");
+}
+$("#studentlist").addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]");const d=e.target.closest("[data-del]");
+  if(o){db.current=o.dataset.open;save();show("valorar")}
+  if(d){const s=db.students.find(x=>x.id===d.dataset.del);
+    if(s&&confirm("¿Eliminar a "+s.name+" y su valoración?")){
+      db.students=db.students.filter(x=>x.id!==s.id);if(db.current===s.id)db.current=null;save();renderList();
+    }}
+});
+
+/* ---------- Valorar ---------- */
+function renderValorar(){
+  const st=cur();const box=$("#v-valorar");
+  if(!st){box.innerHTML='<p class="empty">Elige a un alumno o alumna en la pestaña Alumnado, o añade uno nuevo.</p>';return}
+  st.comments=st.comments||{};
+  box.innerHTML=
+   '<div class="card b"><h2>✏️ '+esc(st.name)+'</h2><p class="hint" style="margin:0">Elige el nivel de cada criterio mirando la carta. La nota final es la media de los cuatro criterios.</p></div>'+
+   RUBRIC.map(c=>
+     '<fieldset class="crit"><legend>'+c.icon+' '+c.name+'</legend><p class="sub">'+c.sub+'</p><div class="lvls">'+
+     c.levels.map(l=>'<label class="lvl l'+l.v+'" data-c="'+c.id+'" data-v="'+l.v+'"><input type="radio" name="r-'+c.id+'" value="'+l.v+'">'+
+       '<span class="lh"><span class="chip">'+l.label+'</span><span class="lp">'+l.v+' pt</span></span><span class="ld">'+l.desc+'</span></label>').join("")+
+     '</div><div class="cm"><label for="c-'+c.id+'">Observaciones (opcional)</label><textarea id="c-'+c.id+'" data-cm="'+c.id+'">'+esc(st.comments[c.id]||"")+'</textarea></div></fieldset>').join("")+
+   '<div class="card y"><h2>💬 Comentario general</h2><textarea id="notes" placeholder="Comentario final para el informe (opcional)">'+esc(st.notes)+'</textarea>'+
+   '<div class="tools"><button class="btn green" id="goreport">Ver informe</button></div></div>'+
+   '<div class="scorebar" aria-live="polite"><div class="scorehead"><span id="sdone"></span><b id="stot"></b></div>'+
+   '<div class="meter">'+CRIT.map(c=>'<div class="seg"><i id="seg-'+c+'" style="width:0"></i></div>').join("")+'</div>'+
+   '<div class="seglabels"><span>Motivación</span><span>Contenido</span><span>Lenguaje</span><span>Present.</span></div></div>';
+  refresh();
+}
+function refresh(){
+  const st=cur();if(!st)return;
+  document.querySelectorAll("label.lvl").forEach(l=>{
+    const on=st.levels[l.dataset.c]===parseInt(l.dataset.v,10);
+    l.classList.toggle("on",on);l.querySelector("input").checked=on;
+  });
+  const n=doneCount(st);
+  $("#stot").textContent=fmt(nota(st))+" / 4";
+  $("#sdone").innerHTML=(n===4?"Nota final":n+" de 4 criterios")+' <small>(suma '+sum(st)+' de 16)</small>';
+  CRIT.forEach(c=>{$("#seg-"+c).style.width=((st.levels[c]||0)*25)+"%"});
+}
+$("#v-valorar").addEventListener("change",e=>{
+  const st=cur();if(!st)return;
+  if(e.target.matches("input[type=radio]")){st.levels[e.target.name.replace("r-","")]=parseInt(e.target.value,10);save();refresh()}
+});
+$("#v-valorar").addEventListener("input",e=>{
+  const st=cur();if(!st)return;
+  if(e.target.dataset.cm){st.comments[e.target.dataset.cm]=e.target.value;save()}
+  if(e.target.id==="notes"){st.notes=e.target.value;save()}
+});
+$("#v-valorar").addEventListener("click",e=>{if(e.target.id==="goreport")show("informe")});
+
+/* ---------- Rúbrica (consulta e impresión) ---------- */
+function renderRubrica(){
+  $("#rubbox").innerHTML=RUBRIC.map(c=>
+    '<fieldset class="crit"><legend>'+c.icon+' '+c.name+'</legend><p class="sub">'+c.sub+'</p><div class="lvls">'+
+    c.levels.map(l=>'<div class="lvl static l'+l.v+'"><span class="lh"><span class="chip">'+l.label+'</span><span class="lp">'+l.v+' pt</span></span><span class="ld">'+l.desc+'</span></div>').join("")+
+    '</div></fieldset>').join("");
+}
+function rubricTableHTML(){
+  const lv=RUBRIC[0].levels;
+  return '<div class="rubprint"><div class="rubhead"><p class="rk">CRA Los Almendros · Proyecto Erasmus+ · Movilidad a Polonia, mayo 2027</p><h2>RÚBRICA CARTA DE MOTIVACIÓN · ALUMNOS</h2></div>'+
+    '<table class="rubtable"><thead><tr><th class="hc">Criterio</th>'+lv.map(l=>'<th class="l'+l.v+'">'+l.label+' ('+l.v+')</th>').join("")+'</tr></thead><tbody>'+
+    RUBRIC.map(c=>'<tr><td class="cn">'+c.name+'</td>'+c.levels.map(l=>'<td class="l'+l.v+'">'+l.desc+'</td>').join("")+'</tr>').join("")+
+    '</tbody></table><p class="rubfoot">Nota final: media de los cuatro criterios (de 1 a 4 puntos).</p></div>';
+}
+$("#printrub").addEventListener("click",()=>{$("#printarea").innerHTML=rubricTableHTML();window.print()});
+$("#gorub").addEventListener("click",()=>show("rubrica"));
+
+/* ---------- Informe ---------- */
+const hoy=()=>new Date().toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"});
+function summary(st){
+  const nom={motivacion:"la motivación",contenido:"el contenido",lenguaje:"el lenguaje",presentacion:"la presentación"};
+  const done=CRIT.filter(c=>st.levels[c]);
+  if(!done.length)return "";
+  const fuertes=done.filter(c=>st.levels[c]>=3).map(c=>nom[c]);
+  const mejorar=done.filter(c=>st.levels[c]<=2).map(c=>nom[c]);
+  const lista=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" y "+a[a.length-1];
+  let t=done.length===4?"La carta obtiene una nota final de "+fmt(nota(st))+" sobre 4 (suma: "+sum(st)+" de 16).":"Valoración incompleta: faltan criterios por valorar.";
+  if(fuertes.length)t+=" Destaca en "+lista(fuertes)+".";
+  if(mejorar.length)t+=" Conviene mejorar "+lista(mejorar)+".";
+  return t;
+}
+function reportHTML(st){
+  const cm=st.comments||{};
+  const ev=db.evaluator?" · Valorado por "+esc(db.evaluator):"";
+  const n=doneCount(st);
+  return '<article class="report"><header class="rh"><p class="rk">CRA Los Almendros · Proyecto Erasmus+ · Movilidad a Polonia, mayo 2027</p>'+
+    '<h2>Informe de valoración de la carta de motivación</h2><p class="rm"><b>'+esc(st.name)+'</b> · '+hoy()+ev+'</p></header>'+
+    RUBRIC.map(c=>{
+      const v=st.levels[c.id];const l=v?levelOf(c.id,v):null;
+      return '<section class="rc"><div class="rt"><b>'+c.icon+' '+c.name+'</b>'+(l?'<span class="chip l'+v+'">'+l.label+' · '+v+' / 4</span>':'<span class="chip" style="--lc:#cbd5e6;--lt:#394056">Sin valorar</span>')+'</div>'+
+        (l?'<p>'+l.desc+'</p>':'')+
+        (cm[c.id]&&cm[c.id].trim()?'<p><b>Observaciones:</b> '+esc(cm[c.id])+'</p>':'')+
+        (l&&v<4?'<p><b>Para mejorar:</b> '+c.tip+'</p>':'')+'</section>';
+    }).join("")+
+    '<div class="rtot"><span>Nota final (media)</span><b>'+(n===4?fmt(nota(st))+' / 4':'Pendiente')+'</b></div>'+
+    '<div class="meter">'+CRIT.map(c=>'<div class="seg"><i style="width:'+((st.levels[c]||0)*25)+'%"></i></div>').join("")+'</div>'+
+    '<div class="seglabels"><span>Motivación</span><span>Contenido</span><span>Lenguaje</span><span>Present.</span></div>'+
+    (summary(st)?'<p class="rsum">'+summary(st)+'</p>':'')+
+    (st.notes&&st.notes.trim()?'<div class="rnote"><b>Comentario general:</b> '+esc(st.notes)+'</div>':'')+
+    '</article>';
+}
+function reportText(st){
+  const cm=st.comments||{};
+  const n=doneCount(st);
+  let t="INFORME DE VALORACIÓN DE LA CARTA DE MOTIVACIÓN · CRA Los Almendros · Erasmus+ Polonia (mayo 2027)\n"+st.name+" · "+hoy()+(db.evaluator?" · Valorado por "+db.evaluator:"")+"\n\n";
+  RUBRIC.forEach(c=>{
+    const v=st.levels[c.id];const l=v?levelOf(c.id,v):null;
+    t+=c.name+": "+(l?l.label+" ("+v+" / 4)":"Sin valorar")+"\n";
+    if(l)t+=l.desc+"\n";
+    if(cm[c.id]&&cm[c.id].trim())t+="Observaciones: "+cm[c.id].trim()+"\n";
+    if(l&&v<4)t+="Para mejorar: "+c.tip+"\n";
+    t+="\n";
+  });
+  t+="NOTA FINAL (media): "+(n===4?fmt(nota(st))+" / 4 (suma "+sum(st)+" de 16)":"pendiente")+"\n";
+  if(summary(st))t+=summary(st)+"\n";
+  if(st.notes&&st.notes.trim())t+="\nComentario general: "+st.notes.trim()+"\n";
+  return t;
+}
+function renderInforme(){
+  const sel=$("#repsel");
+  $("#evaluator").value=db.evaluator||"";
+  $("#copymsg").textContent="";
+  if(!db.students.length){sel.innerHTML="";$("#reportbox").innerHTML='<p class="empty">Añade alumnado en la pestaña Alumnado para generar informes.</p>';return}
+  if(!cur())db.current=db.students[0].id;
+  sel.innerHTML=db.students.map(s=>'<option value="'+s.id+'"'+(s.id===db.current?" selected":"")+'>'+esc(s.name)+'</option>').join("");
+  $("#reportbox").innerHTML=reportHTML(cur());
+}
+$("#repsel").addEventListener("change",e=>{db.current=e.target.value;save();renderInforme()});
+$("#evaluator").addEventListener("input",e=>{db.evaluator=e.target.value;save();if(cur())$("#reportbox").innerHTML=reportHTML(cur())});
+function printReports(list){
+  if(!list.length)return;
+  $("#printarea").innerHTML=list.map(reportHTML).join("");
+  window.print();
+}
+$("#printonebtn").addEventListener("click",()=>{const s=cur();if(s)printReports([s])});
+$("#printallbtn").addEventListener("click",()=>{
+  if(!db.students.length){alert("Todavía no hay alumnado.");return}
+  printReports(db.students);
+});
+$("#copybtn").addEventListener("click",async()=>{
+  const s=cur();if(!s)return;const t=reportText(s);const msg=$("#copymsg");
+  try{await navigator.clipboard.writeText(t);msg.textContent="Informe copiado."}
+  catch(e){
+    const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");msg.textContent="Informe copiado."}catch(_){msg.textContent="No se pudo copiar en este navegador."}
+    ta.remove();
+  }
+});
+
+/* ---------- Exportar y copia de seguridad ---------- */
+$("#csvbtn").addEventListener("click",()=>{
+  if(!db.students.length){alert("Todavía no hay alumnado.");return}
+  const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"';
+  const num=v=>v?String(r2(v)).replace(".",","):"";
+  const head=["Alumno/a"].concat(RUBRIC.map(c=>c.name)).concat(["Suma (máx. 16)","Nota final (máx. 4)","Comentario general"]);
+  const lines=[head.map(q).join(";")];
+  db.students.forEach(s=>lines.push([q(s.name)].concat(CRIT.map(c=>q(num(s.levels[c])))).concat([q(doneCount(s)?sum(s):""),q(doneCount(s)===4?num(nota(s)):""),q(s.notes)]).join(";")));
+  download("valoracion-cartas-erasmus.csv","\ufeff"+lines.join("\r\n"),"text/csv;charset=utf-8");
+});
+$("#jsonbtn").addEventListener("click",()=>download("copia-seguridad-rubrica-erasmus.json",JSON.stringify(db),"application/json"));
+$("#jsonin").addEventListener("change",e=>{
+  const f=e.target.files[0];if(!f)return;
+  const fr=new FileReader();
+  fr.onload=()=>{
+    try{
+      const d=JSON.parse(String(fr.result));
+      if(!d||!Array.isArray(d.students))throw new Error("formato");
+      if(confirm("Se sustituirán los datos actuales por la copia de seguridad. ¿Continuar?")){
+        db=Object.assign({students:[],current:null,evaluator:""},d);save();renderList();
+      }
+    }catch(err){alert("El archivo no es una copia de seguridad válida.")}
+    e.target.value="";
+  };
+  fr.readAsText(f);
+});
+$("#wipebtn").addEventListener("click",()=>{
+  if(confirm("Se borrarán todos los datos de este navegador. ¿Continuar?")){db={students:[],current:null,evaluator:""};save();renderList()}
+});
+
+renderList();
+</script>
+</body>
+</html>
